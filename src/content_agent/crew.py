@@ -1,6 +1,8 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai import LLM
+from crewai_tools import SerperDevTool
+from content_agent.tools.image_tool import ImageSearchTool
 import os
 from dotenv import load_dotenv
 
@@ -43,6 +45,22 @@ class ContentAgent():
 			base_url="http://localhost:11434"
 		)
 
+		# Initialize tools
+		self.search_tool = SerperDevTool()
+		self.image_tool = ImageSearchTool()
+
+	@agent
+	def researcher(self) -> Agent:
+		return Agent(
+			config=self.agents_config['researcher'],
+			verbose=True,
+			llm=self.llm,
+			tools=[
+				self.search_tool,
+				self.image_tool
+			]
+		)
+
 	@agent
 	def content_creator(self) -> Agent:
 		return Agent(
@@ -63,16 +81,23 @@ class ContentAgent():
 	# task dependencies, and task callbacks, check out the documentation:
 	# https://docs.crewai.com/concepts/tasks#overview-of-a-task
 	@task
+	def research_task(self) -> Task:
+		return Task(
+			config=self.tasks_config['research_task']
+		)
+
+	@task
 	def content_creation_task(self) -> Task:
 		return Task(
-			config=self.tasks_config['content_creation_task']
+			config=self.tasks_config['content_creation_task'],
+			context=[self.research_task()]
 		)
 
 	@task
 	def editing_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['editing_task'],
-			context=[self.content_creation_task()]  # Fixed: Call the method to get the task
+			context=[self.content_creation_task()]
 		)
 
 	@crew

@@ -1,20 +1,43 @@
+research_task:
+  description: >
+    Conduct thorough research about {topic}.
+    - Find the latest information and developments
+    - Identify key trends and statistics
+    - Gather relevant examples and case studies
+    - Verify information from multiple sources
+    - Download images:
+      * Use the Image Search and Download Tool
+      * Search for "{topic} stadium" and "{topic} trophy"
+      * Tool only needs the search query as a simple string
+    Make sure to find current information from {current_year}.
+  expected_output: >
+    A detailed research summary including:
+    - Key findings and trends
+    - Important statistics
+    - Notable examples
+    - Source citations
+    - List of downloaded images with their filenames
+  agent: researcher
+
 content_creation_task:
   description: >
-    Create an engaging and informative article about {topic}.
+    Create an engaging and informative article about {topic} using the research provided.
     Consider the following aspects:
     - Target audience and their knowledge level
     - Current trends and relevance
     - Key points to cover
     - Examples and practical applications
+    - Include references to the downloaded images where relevant
     Make sure to include a compelling introduction and conclusion.
   expected_output: >
     A well-structured article in markdown format, including:
     - Engaging title
     - Introduction
-    - Main content sections
+    - Main content sections with image references
     - Conclusion
     - Key takeaways
   agent: content_creator
+  context: [research_task]
 
 editing_task:
   description: >
@@ -31,4 +54,5 @@ editing_task:
     - SEO optimizations
     - Formatting improvements
   agent: editor
+  context: [content_creation_task]
   output_file: final_article.md
