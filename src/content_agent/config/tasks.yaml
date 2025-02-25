@@ -1,0 +1,34 @@
+content_creation_task:
+  description: >
+    Create an engaging and informative article about {topic}.
+    Consider the following aspects:
+    - Target audience and their knowledge level
+    - Current trends and relevance
+    - Key points to cover
+    - Examples and practical applications
+    Make sure to include a compelling introduction and conclusion.
+  expected_output: >
+    A well-structured article in markdown format, including:
+    - Engaging title
+    - Introduction
+    - Main content sections
+    - Conclusion
+    - Key takeaways
+  agent: content_creator
+
+editing_task:
+  description: >
+    Review and enhance the article to ensure:
+    - Clear and engaging writing style
+    - Proper structure and flow
+    - Grammar and clarity
+    - SEO optimization
+    Add suggestions for improvements where necessary.
+  expected_output: >
+    An edited and polished version of the article with:
+    - Improved readability
+    - Enhanced structure
+    - SEO optimizations
+    - Formatting improvements
+  agent: editor
+  output_file: final_article.md
